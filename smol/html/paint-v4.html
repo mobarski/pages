@@ -375,8 +375,7 @@ function vm_mouse_frame() {
 
 // TODO
 function vm_on_mouse_down(e) {
-    if (e.pointerType !== 'mouse' && e.pointerType !== 'touch') return;
-    //if ((e.button!=0)&&(e.button!=undefined)) { return } // left mouse button or touch only
+    if (e.pointerType == 'mouse' && e.button != 0) return;
     //if (!vm.mouse.over) { return }
     let bcr = vm.mouse.canvas.getBoundingClientRect()
     let mxy = _vm_mouse_xy(e)
@@ -392,8 +391,7 @@ function vm_on_mouse_down(e) {
 
 // TODO
 function vm_on_mouse_up(e) {
-    if (e.pointerType !== 'mouse' && e.pointerType !== 'touch') return;
-    //if ((e.button!=0)&&(e.button!=undefined)) { return } // left mouse button or touch only
+    if (e.pointerType == 'mouse' && e.button != 0) return;
     let bcr = vm.mouse.canvas.getBoundingClientRect()
     let mxy = _vm_mouse_xy(e)
     vm.mouse.time_released = performance.now()
