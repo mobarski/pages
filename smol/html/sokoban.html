@@ -1,0 +1,626 @@
+<html></html>
+<script>
+vm = {}
+vm.cfg = {}
+vm.cfg.core = {}
+vm.cfg.sugar = {}
+vm.cfg.colors = {}
+vm.cfg.leds = {}
+vm.cfg.timer = {}
+vm.cfg.keys = {}
+vm.cfg.stack = {}
+vm.cfg.rom = {}
+vm.cfg.tape = {}
+vm.cfg.core.registers = 100
+vm.cfg.core.parts = ['core', 'sugar', 'colors', 'leds', 'timer', 'keys', 'stack', 'rom', 'tape']
+vm.cfg.leds.width = 19
+vm.cfg.leds.height = 19
+vm.cfg.leds.size = 32
+vm.cfg.leds.radius = 15
+vm.cfg.leds.title = 'Smol Sokoban'
+vm.cfg.colors.data = ['#F5F5F5', '#D3D3D3', '#808080', '#F08080', '#FFD700', '#00FA9A', '#87CEFA', '#DDA0DD']
+vm.cfg.tape.tapes = [[10, 10, 1, 1, 3, 7, 5, 1, 4, 7, 7, 0, 0], [11, 12, 6, 70, 2, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 4, 5, 8, 5, 4, 6, 8, 6, 2, 7, 3, 7, 4, 7, 8, 7, 9, 7, 2, 8, 9, 8, 0, 9, 1, 9, 2, 9, 4, 9, 6, 9, 7, 9, 9, 9, 13, 9, 14, 9, 15, 9, 16, 9, 17, 9, 18, 9, 0, 10, 4, 10, 6, 10, 7, 10, 9, 10, 10, 10, 11, 10, 12, 10, 13, 10, 18, 10, 0, 11, 18, 11, 0, 12, 1, 12, 2, 12, 3, 12, 4, 12, 6, 12, 7, 12, 8, 12, 10, 12, 12, 12, 13, 12, 18, 12, 4, 13, 10, 13, 11, 13, 12, 13, 13, 13, 14, 13, 15, 13, 16, 13, 17, 13, 18, 13, 4, 14, 5, 14, 6, 14, 7, 14, 8, 14, 9, 14, 10, 14, 6, 4, 5, 6, 7, 7, 5, 8, 7, 8, 2, 11, 5, 11, 6, 3, 16, 10, 17, 10, 16, 11, 17, 11, 16, 12, 17, 12], [9, 8, 10, 62, 2, 2, 4, 3, 4, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 9, 4, 10, 4, 11, 4, 12, 4, 13, 4, 2, 5, 7, 5, 13, 5, 14, 5, 15, 5, 2, 6, 7, 6, 15, 6, 2, 7, 7, 7, 9, 7, 10, 7, 11, 7, 12, 7, 15, 7, 2, 8, 11, 8, 12, 8, 15, 8, 2, 9, 7, 9, 9, 9, 14, 9, 15, 9, 2, 10, 3, 10, 4, 10, 5, 10, 6, 10, 7, 10, 9, 10, 10, 10, 15, 10, 4, 11, 15, 11, 4, 12, 9, 12, 15, 12, 4, 13, 5, 13, 6, 13, 7, 13, 8, 13, 9, 13, 10, 13, 11, 13, 12, 13, 13, 13, 14, 13, 15, 13, 10, 4, 9, 6, 12, 6, 8, 7, 12, 9, 11, 10, 13, 10, 6, 11, 9, 11, 11, 11, 13, 11, 10, 3, 3, 5, 4, 5, 3, 6, 4, 6, 3, 7, 4, 7, 3, 8, 4, 8, 3, 9, 4, 9], [15, 5, 11, 58, 2, 9, 4, 10, 4, 11, 4, 12, 4, 13, 4, 14, 4, 15, 4, 16, 4, 9, 5, 16, 5, 9, 6, 12, 6, 15, 6, 16, 6, 9, 7, 15, 7, 9, 8, 10, 8, 15, 8, 1, 9, 2, 9, 3, 9, 4, 9, 5, 9, 6, 9, 7, 9, 8, 9, 9, 9, 13, 9, 15, 9, 16, 9, 17, 9, 1, 10, 8, 10, 9, 10, 17, 10, 1, 11, 2, 11, 17, 11, 1, 12, 8, 12, 9, 12, 10, 12, 11, 12, 12, 12, 13, 12, 14, 12, 15, 12, 16, 12, 17, 12, 1, 13, 2, 13, 3, 13, 4, 13, 5, 13, 6, 13, 7, 13, 8, 13, 11, 4, 11, 6, 13, 6, 11, 7, 14, 7, 11, 8, 13, 8, 11, 9, 11, 10, 14, 10, 10, 11, 13, 11, 11, 3, 2, 10, 3, 10, 4, 10, 5, 10, 3, 11, 4, 11, 5, 11, 2, 12, 3, 12, 4, 12, 5, 12], [10, 13, 20, 82, 2, 11, 2, 12, 2, 13, 2, 14, 2, 15, 2, 16, 2, 17, 2, 18, 2, 11, 3, 18, 3, 0, 4, 1, 4, 2, 4, 3, 4, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 9, 4, 10, 4, 11, 4, 18, 4, 0, 5, 5, 5, 18, 5, 0, 6, 5, 6, 11, 6, 18, 6, 0, 7, 11, 7, 18, 7, 0, 8, 5, 8, 11, 8, 12, 8, 13, 8, 14, 8, 15, 8, 16, 8, 17, 8, 18, 8, 0, 9, 5, 9, 11, 9, 0, 10, 1, 10, 3, 10, 4, 10, 5, 10, 6, 10, 7, 10, 8, 10, 9, 10, 10, 10, 11, 10, 0, 11, 5, 11, 10, 11, 11, 11, 0, 12, 10, 12, 11, 12, 0, 13, 5, 13, 11, 13, 0, 14, 5, 14, 10, 14, 11, 14, 0, 15, 1, 15, 2, 15, 3, 15, 4, 15, 5, 15, 6, 15, 7, 15, 8, 15, 9, 15, 10, 15, 20, 4, 8, 5, 10, 5, 2, 6, 3, 6, 4, 6, 6, 6, 9, 6, 3, 7, 9, 7, 2, 8, 3, 8, 6, 8, 8, 8, 10, 8, 3, 9, 6, 12, 3, 13, 4, 13, 6, 13, 7, 13, 20, 3, 14, 3, 15, 3, 16, 3, 17, 3, 14, 4, 15, 4, 16, 4, 17, 4, 14, 5, 15, 5, 16, 5, 17, 5, 14, 6, 15, 6, 16, 6, 17, 6, 14, 7, 15, 7, 16, 7, 17, 7], [15, 10, 12, 71, 2, 9, 3, 10, 3, 11, 3, 12, 3, 13, 3, 9, 4, 13, 4, 14, 4, 15, 4, 16, 4, 17, 4, 9, 5, 11, 5, 13, 5, 14, 5, 17, 5, 9, 6, 17, 6, 1, 7, 2, 7, 3, 7, 4, 7, 5, 7, 6, 7, 7, 7, 8, 7, 9, 7, 11, 7, 12, 7, 13, 7, 17, 7, 1, 8, 8, 8, 9, 8, 15, 8, 16, 8, 17, 8, 1, 9, 15, 9, 16, 9, 1, 10, 8, 10, 9, 10, 16, 10, 1, 11, 2, 11, 3, 11, 4, 11, 5, 11, 6, 11, 7, 11, 8, 11, 9, 11, 15, 11, 16, 11, 9, 12, 16, 12, 9, 13, 10, 13, 11, 13, 13, 13, 14, 13, 16, 13, 11, 14, 16, 14, 11, 15, 12, 15, 13, 15, 14, 15, 15, 15, 16, 15, 12, 4, 12, 5, 15, 6, 11, 8, 14, 8, 10, 9, 12, 9, 13, 9, 10, 10, 13, 10, 12, 11, 11, 12, 13, 12, 12, 3, 2, 8, 3, 8, 4, 8, 5, 8, 2, 9, 3, 9, 4, 9, 5, 9, 2, 10, 3, 10, 4, 10, 5, 10], [12, 5, 10, 56, 2, 3, 4, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 11, 4, 12, 4, 13, 4, 3, 5, 8, 5, 10, 5, 11, 5, 13, 5, 14, 5, 3, 6, 8, 6, 9, 6, 10, 6, 14, 6, 3, 7, 14, 7, 3, 8, 8, 8, 10, 8, 14, 8, 3, 9, 6, 9, 7, 9, 8, 9, 10, 9, 14, 9, 3, 10, 4, 10, 5, 10, 6, 10, 10, 10, 14, 10, 6, 11, 10, 11, 14, 11, 6, 12, 14, 12, 6, 13, 9, 13, 10, 13, 14, 13, 6, 14, 7, 14, 8, 14, 9, 14, 10, 14, 11, 14, 12, 14, 13, 14, 14, 14, 10, 4, 11, 7, 12, 7, 12, 8, 12, 9, 8, 10, 11, 10, 9, 11, 12, 11, 8, 12, 11, 12, 10, 3, 4, 5, 5, 5, 4, 6, 5, 6, 4, 7, 5, 7, 4, 8, 5, 8, 4, 9, 5, 9], [8, 5, 11, 67, 2, 10, 3, 11, 3, 12, 3, 13, 3, 14, 3, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 9, 4, 10, 4, 14, 4, 15, 4, 3, 5, 4, 5, 6, 5, 9, 5, 10, 5, 15, 5, 3, 6, 15, 6, 3, 7, 9, 7, 10, 7, 11, 7, 15, 7, 3, 8, 4, 8, 5, 8, 7, 8, 8, 8, 9, 8, 10, 8, 11, 8, 13, 8, 14, 8, 15, 8, 3, 9, 8, 9, 9, 9, 10, 9, 14, 9, 3, 10, 14, 10, 3, 11, 8, 11, 9, 11, 10, 11, 14, 11, 3, 12, 8, 12, 10, 12, 14, 12, 3, 13, 6, 13, 7, 13, 8, 13, 10, 13, 11, 13, 12, 13, 13, 13, 14, 13, 3, 14, 4, 14, 5, 14, 6, 14, 11, 4, 12, 5, 13, 5, 8, 6, 6, 7, 12, 8, 5, 9, 5, 10, 7, 10, 9, 10, 5, 12, 6, 12, 11, 3, 12, 9, 13, 9, 11, 10, 12, 10, 13, 10, 11, 11, 12, 11, 13, 11, 11, 12, 12, 12, 13, 12], [2, 7, 18, 79, 2, 3, 1, 4, 1, 5, 1, 6, 1, 3, 2, 6, 2, 7, 2, 8, 2, 9, 2, 10, 2, 11, 2, 12, 2, 13, 2, 14, 2, 15, 2, 16, 2, 3, 3, 16, 3, 3, 4, 6, 4, 10, 4, 16, 4, 3, 5, 11, 5, 16, 5, 1, 6, 2, 6, 3, 6, 6, 6, 8, 6, 11, 6, 12, 6, 13, 6, 14, 6, 16, 6, 1, 7, 3, 7, 11, 7, 12, 7, 16, 7, 1, 8, 8, 8, 10, 8, 14, 8, 16, 8, 1, 9, 16, 9, 1, 10, 2, 10, 3, 10, 4, 10, 5, 10, 8, 10, 9, 10, 10, 10, 11, 10, 12, 10, 13, 10, 14, 10, 15, 10, 16, 10, 3, 11, 10, 11, 3, 12, 10, 12, 3, 13, 10, 13, 3, 14, 10, 14, 3, 15, 10, 15, 3, 16, 4, 16, 5, 16, 6, 16, 7, 16, 8, 16, 9, 16, 10, 16, 18, 4, 8, 3, 12, 3, 14, 3, 5, 4, 8, 4, 13, 4, 6, 5, 8, 5, 5, 6, 4, 7, 6, 7, 8, 7, 6, 8, 9, 8, 5, 9, 10, 9, 12, 9, 14, 9, 18, 3, 4, 13, 5, 13, 6, 13, 7, 13, 8, 13, 9, 13, 4, 14, 5, 14, 6, 14, 7, 14, 8, 14, 9, 14, 4, 15, 5, 15, 6, 15, 7, 15, 8, 15, 9, 15], [2, 12, 14, 78, 2, 11, 2, 12, 2, 13, 2, 14, 2, 15, 2, 16, 2, 17, 2, 11, 3, 17, 3, 7, 4, 8, 4, 9, 4, 10, 4, 11, 4, 17, 4, 7, 5, 17, 5, 7, 6, 10, 6, 11, 6, 17, 6, 7, 7, 8, 7, 10, 7, 11, 7, 17, 7, 6, 8, 7, 8, 8, 8, 10, 8, 11, 8, 12, 8, 13, 8, 14, 8, 15, 8, 16, 8, 17, 8, 6, 9, 12, 9, 13, 9, 2, 10, 3, 10, 4, 10, 5, 10, 6, 10, 13, 10, 14, 10, 15, 10, 16, 10, 17, 10, 1, 11, 2, 11, 6, 11, 13, 11, 17, 11, 1, 12, 17, 12, 1, 13, 2, 13, 3, 13, 4, 13, 5, 13, 6, 13, 13, 13, 14, 13, 15, 13, 16, 13, 17, 13, 6, 14, 13, 14, 6, 15, 7, 15, 8, 15, 9, 15, 10, 15, 11, 15, 12, 15, 13, 15, 14, 4, 8, 9, 9, 9, 10, 9, 9, 10, 11, 10, 7, 11, 9, 11, 4, 12, 7, 12, 12, 12, 15, 12, 8, 13, 9, 13, 11, 13, 14, 3, 14, 3, 15, 3, 16, 3, 14, 4, 15, 4, 16, 4, 14, 5, 16, 5, 14, 6, 15, 6, 16, 6, 14, 7, 15, 7, 16, 7]]
+</script>
+<script>
+// === CORE MK1 ===============================================================
+
+vm.ip = 0
+vm.code = []
+vm.reg = new Array(vm.cfg.core.registers).fill(0)
+vm.ext = {} // extensions
+vm.halt = false
+vm.stop = false // stop also the interrupt timer
+vm.init = []
+vm.trace = [] // XXX
+
+function vm_init() {
+	vm.ip = 0
+	vm.halt = false
+	vm.stop = false
+	for (var i=0; i<vm.init.length; i++) {
+		vm.init[i]()
+	}
+}
+
+function vm_load(code_as_text) {
+	vm.code = deserialize_code(code_as_text)
+}
+
+function vm_run(n_steps=0) {
+	var i = 0
+	let t0 = performance.now()
+	if (n_steps==0) {
+		for (i=0; (!vm.halt)&&(!vm.stop); i++) { vm_step() }
+	} else {
+		for (i=0; (i<n_steps)&&(!vm.halt)&&(!vm.stop); i++) { vm_step() }
+	}
+	//console.log('vm_run',i,'cycles',performance.now()-t0,'ms') // XXX
+}
+
+function vm_step() {
+	vm.trace.push([vm.ip,vm.code[vm.ip],vm.code[vm.ip+1]]) // XXX
+	let t = get_op()
+	if (t=='if') {
+		// CONDITIONAL JUMP
+		let a = get_op()
+		let op = get_op()
+		let b = get_op()
+		let addr_then = get_op()
+		let addr_else = get_op()
+		if (vm_alu(a,op,b)) {
+			vm.ip = addr_then ? addr_then : vm.ip
+		} else {
+			vm.ip = addr_else ? addr_else : vm.ip
+		}
+	} else if (t in vm.ext) {
+		// EXTENSION
+		vm.ext[t]()
+	} else {
+		// ALU
+		let op = get_op()
+		let b = get_op()
+		let val = vm_alu(t,op,b)
+		vm_set(t, val)
+	}
+}
+
+function get_op() {
+	if (vm.ip>vm.code.length) { console.log('end of code reached!'); vm.stop=true; return 'halt' } // XXX
+	let op = vm.code[vm.ip]
+	vm.ip += 1
+	return op
+}
+
+function vm_alu(a,op,b) {
+	var a = value_of(a)
+	var b = value_of(b)
+	switch (op) {
+	    case  '+': case '+=':  return a+b
+	    case  '-': case '-=':  return a-b
+	    case  '*': case '*=':  return a*b
+	    case  '/': case '/=':  return a/b
+	    case  '%': case '%=':  return a%b
+	    case  '&': case '&=':  return a&b
+	    case  '|': case '|=':  return a|b
+	    case  '^': case '^=':  return a^b
+	    case '<<': case '<<=': return a<<b
+	    case '>>': case '>>=': return a>>b
+	    case '//': case '//=': return Math.floor(a/b)
+	    case  '=': return b
+	    case  '<': return a<b
+	    case  '>': return a>b
+	    case '<=': return a<=b
+	    case '>=': return a>=b
+	    case '==': return a==b
+	    case '!=': return a!=b
+	    case '&&': return a&&b
+	    case '||': return a||b
+		default: console.log('unknown op',op,'a',a,'b',b,'ip',vm.ip); vm.stop=true; return 0
+    }
+}
+
+
+function vm_set(x, val) {
+	if (is_ref(x)) {
+		let r = get_ref(x)
+		vm.reg[r] = val
+	} else if (is_reg(x)){
+		let r = get_reg(x)
+		vm.reg[r] = val
+	} else if (is_tgt(x)) {
+		let r = get_tgt(x)
+		vm.reg[r] = val
+	}
+}
+
+function value_of(x) {
+	if (is_num(x)) {
+		return x
+	} else if (is_reg(x)) {
+		let r = get_reg(x)
+		return vm.reg[r]
+	} else if (is_ref(x)) {
+		let r = get_ref(x)
+		return vm.reg[r]
+	}
+	console.log('unknown value',x,'ip',vm.ip); vm.stop=true; return 0
+}
+
+// ie: r123 -> 123
+function get_reg(x) {
+	//if (typeof(x) != 'string') { console.log('get_reg',x,'ip',vm.ip); vm.stop=true; return } // XXX
+	return parseInt(x.slice(1))
+}
+
+// ie: >r123 -> 123
+function get_tgt(x) {
+	return parseInt(x.slice(2))
+}
+
+// ie: @r123 -> reg[123]
+function get_ref(x) {
+	//if (typeof(x) != 'string') { console.log('get_ref',x,'ip',vm.ip); vm.stop=true; return } // XXX
+	let r = get_reg(x.slice(1))
+	return vm.reg[r]
+}
+
+function is_reg(x) {
+	if (typeof(x) != 'string') { return false }
+	if (x[0]!='r') { return false }
+	let r = get_reg(x)
+	return ((x[0]=='r') && (r>=0) && (r<vm.cfg.core.registers))
+}
+
+function is_ref(x) {
+	if (typeof(x) != 'string') { return false }
+	return ((x[0]=='@') && is_reg(x.slice(1)))
+}
+
+function is_tgt(x) {
+	if (typeof(x) != 'string') { return false }
+	return ((x[0]=='>') && is_reg(x.slice(1)))
+}
+
+function deserialize_code(text) {
+	var tokens = text.split(/\s+/)
+	return tokens.map(x => is_num(x) ? parseFloat(x) : x)
+
+}
+
+// HELPERS
+
+function is_num(x) {
+	return !isNaN(x) && !isNaN(parseFloat(x))
+}
+
+function is_int(x) {
+	return !isNaN(x) && !isNaN(parseInt(x))
+}
+
+function coalesce(...args) {
+    for (let arg of args) {
+        if (arg !== null && arg !== undefined) {
+            return arg;
+        }
+    }
+    return null;
+}
+
+// === SUGAR MK1 ========================================================================
+
+function vm_goto() {
+	vm.ip = get_op() // TODO: value_of(get_op()) -> computed goto
+}
+
+function vm_halt() {
+	vm.ip -= 1
+	vm.halt = true
+}
+
+function vm_stop() {
+	vm.ip -= 1
+	vm.stop = true
+}
+
+function vm_nop() {
+}
+
+function vm_log() {
+	let op = get_op()
+	let val = value_of(op)
+	console.log('log',op,val)
+}
+
+function vm_assert() {
+	let a = get_op()
+	let op = get_op()
+	let b = get_op()
+	let val = vm_alu(a,op,b)
+	if (!val) {
+		console.log('assertion failed:',a,op,b)
+		vm.halt = true
+	}
+}
+
+vm.ext['goto'] = vm_goto
+vm.ext['halt'] = vm_halt
+vm.ext['stop'] = vm_stop
+vm.ext['log'] = vm_log
+vm.ext['nop'] = vm_nop
+vm.ext['assert'] = vm_assert
+
+// === COLORS MK1 =============================================================
+
+vm.colors = {}
+vm.colors.rgb = coalesce(vm.cfg.colors.data, ['#000000','#ffffff'])
+
+function vm_color(x) {
+	let id = x % vm.colors.rgb.length;
+	return vm.colors.rgb[id]
+}
+
+// === LEDS mk1 ===============================================================
+
+vm.leds = {}
+vm.init.push(_vm_leds_init)
+
+function _vm_leds_init() {
+    vm.leds.width = vm.cfg.leds.width
+    vm.leds.height = vm.cfg.leds.height
+    vm.leds.data = new Array(vm.leds.width * vm.leds.height).fill(0)
+    _vm_leds_init2()
+}
+
+function vm_leds_clear() {
+    let v = value_of(get_op())
+    vm.leds.data.fill(v)
+}
+
+function vm_leds_draw() {
+    _vm_leds_draw_begin()
+    for (var y = 0; y < vm.leds.height; y++) {
+        for (var x = 0; x < vm.leds.width; x++) {
+            var v = vm.leds.data[x + y * vm.leds.width]
+            _vm_leds_draw_led(x, y, v)
+        }
+    }
+    _vm_leds_draw_end()
+}
+
+function vm_leds_set() {
+    let x = value_of(get_op())
+    let y = value_of(get_op())
+    let v = value_of(get_op())
+    vm.leds.data[x + y * vm.leds.width] = v
+}
+
+function vm_leds_get() {
+    let x = value_of(get_op())
+    let y = value_of(get_op())
+    let t = get_op() // output target
+    let v = vm.leds.data[x + y * vm.leds.width]
+    vm_set(t, v)
+}
+
+vm.ext['leds-clear'] = vm_leds_clear // TODO: rename leds-fill
+vm.ext['leds-draw'] = vm_leds_draw
+vm.ext['leds-set'] = vm_leds_set
+vm.ext['leds-get'] = vm_leds_get
+
+
+// === LEDS MK1 - IMPLEMENTATION DETAILS ===
+
+function _vm_leds_init2() {
+    vm.leds.size   = vm.cfg.leds.size
+    vm.leds.radius = vm.cfg.leds.radius
+    let canvas = document.createElement('canvas')
+    canvas.width = vm.leds.width * vm.leds.size
+    canvas.height = vm.leds.height * vm.leds.size
+    //
+    // Create a new container and apply centering styles
+    let container = document.createElement('div')
+    container.style.display = 'flex'
+    container.style.justifyContent = 'center'
+    container.style.alignItems = 'center'
+    container.style.height = '100vh'
+    container.style.flexDirection = 'column' // NEW
+
+    // Create a new title element
+    if (vm.cfg.leds.title) {
+        let title = document.createElement('h1')
+        title.textContent = vm.cfg.leds.title
+        title.style.textAlign = 'center'
+        container.appendChild(title)
+        document.title = title.textContent
+    }
+
+    // Append canvas to the container
+    container.appendChild(canvas)
+
+    // Append the container to the body of the document
+    document.body.appendChild(container)
+    //document.body.appendChild(canvas)
+
+    vm.leds.canvas = canvas
+    vm.leds.ctx = canvas.getContext("2d")
+    //
+    vm.screen = {}
+    vm.screen.width = canvas.width
+    vm.screen.height = canvas.height
+    vm.screen.scale = vm.leds.size
+    vm.screen.ctx = canvas.getContext("2d")
+    vm.screen.canvas = canvas
+}
+
+function _vm_leds_draw_led(x, y, v) {
+    let c = vm_color(v)
+    let r = vm.leds.radius
+    vm.leds.ctx.fillStyle = c
+    vm.leds.ctx.beginPath()
+    //vm.leds.ctx.rect(x * vm.leds.size, y * vm.leds.size, 2*r, 2*r)
+    vm.leds.ctx.arc(vm.leds.size/2 + x * vm.leds.size, vm.leds.size/2 + y * vm.leds.size, r, 0, 2 * Math.PI, false)
+    vm.leds.ctx.fill()
+}
+
+function _vm_leds_draw_begin() {
+    // TODO: background color
+    vm.leds.ctx.clearRect(0, 0, vm.leds.ctx.canvas.width, vm.leds.ctx.canvas.height)
+}
+
+function _vm_leds_draw_end() {} // NOT USED IN THIS IMPLEMENTATIN
+
+
+vm.timer = {}
+vm.timer.addr = 0
+vm.timer.freq = 0
+vm.timer.tick = 0
+vm.timer.timer_id = 0
+//
+vm.timer.debug = []
+vm.timer.t0 = 0
+
+function vm_timer_set() {
+    vm.timer.freq = value_of(get_op())
+    vm.timer.addr = get_op()
+    _vm_set_timer()
+}
+
+function _vm_on_timer() {
+    if (vm.stop) { return }
+    vm.timer.debug.push(performance.now())
+    vm.timer.tick += 1
+    //
+    let addr = vm.timer.addr
+    let freq = vm.timer.freq
+    if ((addr==0) || (freq==0)) { return }
+    _vm_set_timer()
+    //
+    vm.ip = addr
+    vm.halt = false
+    vm_run()
+}
+
+function _vm_set_timer() {
+    if (vm.timer.freq==0) { return }
+    let delay = Math.floor(1000 / vm.timer.freq) // TODO: more precise method (ie 60fps)
+    clearTimeout(vm.timer.timer_id)
+    vm.timer.timer_id = setTimeout(_vm_on_timer, delay)
+}
+
+vm.ext['timer-set'] = vm_timer_set
+
+// === KEYS MK1 ==============================================================
+
+default_key_to_code = {
+    'ArrowLeft':0,
+    'ArrowRight':1,
+    'ArrowUp':2,
+    'ArrowDown':3,
+    'z':4, // a
+    'x':5, // b
+    'q':6, // start
+    'w':7  // select
+}
+
+vm.keys = {}
+vm.keys.key_to_code = coalesce(vm.cfg.keys.key_to_code, default_key_to_code)
+vm.keys.pressed = {}
+vm.keys.status = {}
+vm.init.push(_vm_keys_init)
+
+function _vm_keys_init() {
+    // REF: https://www.w3schools.com/jsref/obj_keyboardevent.asp
+    document.addEventListener('keydown', vm_on_key_down)
+    document.addEventListener('keyup',   vm_on_key_up)
+}
+
+function vm_on_key_down(e) {
+    let code = vm.keys.key_to_code[e.key]
+    if (code == undefined) return
+    //console.log('on_key_down', e.key, code) // XXX
+    vm.keys.pressed[code] = true
+    //
+    e.stopPropagation()
+    e.preventDefault()
+    e.stopImmediatePropagation()
+}
+
+function vm_on_key_up(e) {
+    let code = vm.keys.key_to_code[e.key]
+    if (code == undefined) return
+    //console.log('on_key_up', e.key, code) // XXX
+    vm.keys.pressed[code] = false
+    //
+    e.stopPropagation()
+    e.preventDefault()
+    e.stopImmediatePropagation()
+}
+
+function vm_key_frame() {
+    for (k in vm.keys.key_to_code) {
+        let key = vm.keys.key_to_code[k]
+        if (!vm.keys.pressed[key]) {
+            vm.keys.status[key] = vm.keys.status[key]>0 ? -vm.keys.status[key] : 0
+        } else {
+            vm.keys.status[key] += 1
+        }
+    }
+}
+
+// TODO: rename vm_btn
+function vm_key_xxx() {
+    let k = get_op() // key code
+    let t = get_op() // output target
+    let v = vm.keys.status[k] || 0
+    //console.log('key',k,'status',v) // XXX
+    vm_set(t, v)
+}
+
+vm.ext['key-frame'] = vm_key_frame
+vm.ext['key'] = vm_key_xxx
+
+vm.stack = []
+
+function ext_return() {
+	vm.ip = vm.stack.pop()
+}
+
+function ext_call() {
+	let addr = get_op()
+	vm.stack.push(vm.ip)
+	vm.ip = addr
+}
+
+function ext_push() {
+	let a = get_op()
+	let val = value_of(a)
+	vm.stack.push(val)
+}
+
+function ext_pop() {
+	let a = get_op()
+	let val = vm.stack.pop()
+	vm_set(a, val)
+}
+
+vm.ext['return'] = ext_return
+vm.ext['call'] = ext_call
+vm.ext['push'] = ext_push
+vm.ext['pop'] = ext_pop
+
+// === ROM ====================================================================
+
+vm.rom = {}
+vm.rom.data = []
+vm.rom.bank = 0
+vm.rom.banks = coalesce(vm.cfg.rom.banks, [[]])
+vm.init.push(_vm_rom_init)
+
+function vm_rom_bank() {
+    let b = value_of(get_op()) // bank
+    vm.rom.bank = b
+    if (vm.rom.banks[b] == undefined) {
+        console.log('bank not found', b)
+        vm.stop = true
+        return
+    } else {
+        vm.rom.data = vm.rom.banks[b]
+    }
+}
+
+function vm_rom_get() {
+    let a = value_of(get_op()) // addr
+    let t = get_op() // output target
+    let v = vm.rom.data[a] || 0
+    vm_set(t, v)
+}
+
+vm.ext['rom-bank'] = vm_rom_bank
+vm.ext['rom-get'] = vm_rom_get
+
+function _vm_rom_init() {
+    vm.rom.bank = 0
+    vm.rom.data = vm.rom.banks[vm.rom.bank] || []
+}
+
+// === TAPE ===================================================================
+
+vm.tape = {}
+vm.tape.data = []
+vm.tape.pos = 0
+vm.tape.id = 0
+vm.tape.tapes = coalesce(vm.cfg.tape.tapes, [[]])
+vm.tape.positions = {}
+vm.init.push(_vm_tape_init)
+
+function vm_tape_select() {
+    let id = value_of(get_op()) // tape
+    vm.tape.positions[vm.tape.id] = vm.tape.pos // save current tape position
+    vm.tape.id = id
+    vm.tape.pos = vm.tape.positions[id] || 0 // restore tape position
+    if (vm.tape.tapes[id] == undefined) {
+        console.log('tape not found', id)
+        vm.stop = true
+        return
+    } else {
+        vm.tape.data = vm.tape.tapes[id]
+    }
+}
+
+function vm_tape_read() {
+    let t = get_op() // output target
+    let v = vm.tape.data[vm.tape.pos] || 0
+    vm.tape.pos += 1
+    vm_set(t, v)
+}
+
+function vm_tape_write() {
+    let v = get_op() // value
+    vm.tape.data[vm.tape.pos] = value_of(v)
+    vm.tape.pos += 1
+}
+
+// TODO: pos >= len
+// TODO: pos < 0
+function vm_tape_seek() {
+    let p = value_of(get_op()) // position
+    let m = value_of(get_op()) // mode
+    switch (m) {
+        case 0: vm.tape.pos  = p; break
+        case 1: vm.tape.pos += p; break
+        case 2: vm.tape.pos  = vm.tape.data.length + p; break
+        default:
+            console.log('invalid tape-seek mode', m)
+            vm.stop = true
+            break
+    }
+}
+
+function vm_tape_tell() {
+    let t = get_op() // output target
+    vm_set(t, vm.tape.pos)
+}
+
+function vm_tape_len() {
+    let t = get_op() // output target
+    vm_set(t, vm.tape.data.length)
+}
+
+vm.ext['tape-select']  = vm_tape_select
+vm.ext['tape-seek']  = vm_tape_seek
+vm.ext['tape-tell']  = vm_tape_tell
+vm.ext['tape-read']  = vm_tape_read
+vm.ext['tape-write'] = vm_tape_write
+vm.ext['tape-len'] = vm_tape_len
+
+function _vm_tape_init() {
+    vm.tape.id = 0
+    vm.tape.data = vm.tape.tapes[vm.tape.id] || []
+}
+
+</script>
+<script>
+vm_load("nop leds-clear 0 timer-set 60 12 r0 = 0 call 390 halt nop key-frame leds-draw call 60 call 44 halt nop if r30 == 0 0 36 r0 += 1 call 390 timer-set 60 12 halt nop leds-clear 1 leds-draw r30 -= 1 halt nop if r5 == r6 0 58 r30 = 30 timer-set 60 20 halt nop return nop call 178 if r3 == 0 176 0 leds-get r10 r11 >r21 leds-get r12 r13 >r22 nop nop if r21 == 0 0 87 call 312 nop nop if r21 == 3 0 97 call 312 nop nop if r22 == 2 176 0 if r22 == 4 176 0 if r22 == 6 176 0 if r21 == 4 129 0 if r21 == 6 129 176 nop if r22 == 3 0 143 leds-set r12 r13 6 r5 += 1 nop if r22 == 0 0 154 leds-set r12 r13 4 nop if r21 == 6 0 169 r21 = 3 r5 -= 1 goto 173 nop r21 = 0 nop call 312 nop return nop r10 = r1 r11 = r2 r12 = r1 r13 = r2 nop key 2 >r4 call 359 if r7 == 1 0 213 r11 -= 1 r13 -= 2 r3 = 1 return nop nop key 3 >r4 call 359 if r7 == 1 0 236 r11 += 1 r13 += 2 r3 = 1 return nop nop key 0 >r4 call 359 if r7 == 1 0 259 r10 -= 1 r12 -= 2 r3 = 1 return nop nop key 1 >r4 call 359 if r7 == 1 0 282 r10 += 1 r12 += 2 r3 = 1 return nop nop key 5 >r4 if r4 == 60 0 295 call 390 nop nop key 4 >r4 if r4 == 1 0 307 return nop r3 = 0 return nop nop if r21 == 0 0 327 call 344 leds-set r1 r2 5 return nop nop if r21 == 3 0 342 call 344 leds-set r1 r2 7 return nop return nop leds-set r1 r2 r20 r20 = r21 r1 = r10 r2 = r11 return nop if r4 == 1 380 0 if r4 >= 30 0 385 if r4 % 5 385 380 goto 385 nop r7 = 1 return nop r7 = 0 return nop call 394 return nop leds-clear 0 r5 = 0 tape-select r0 tape-seek 0 0 tape-read >r2 tape-read >r1 tape-read >r6 leds-set r1 r2 5 nop tape-read >r33 tape-read >r34 if r33 == 0 447 0 r31 = 0 nop tape-read >r10 tape-read >r11 leds-set r10 r11 r34 r31 += 1 if r31 < r33 429 415 nop return")
+vm_init()
+vm_run(0)
+</script>
