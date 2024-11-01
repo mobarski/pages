@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Orbital Maneuvers Visualizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        #resetBurnBtn:not(:disabled) {
+            background: #ff4444;
+        }
+        #resetBurnBtn:not(:disabled):hover {
+            background: #cc0000;
+        }
+        body {
+            background-color: #000000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #orbitCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .controls {
+            background: rgba(26, 26, 74, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            width: 800px;
+            box-sizing: border-box;
+        }
+        .burn-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .velocity-controls {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            background: #2196F3;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #1976D2;
+            transform: translateY(-1px);
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        button:disabled:hover {
+            background: #666;
+            transform: none;
+        }
+        button#executePauseBtn {
+            background: #4CAF50;
+        }
+        button#executePauseBtn:hover {
+            background: #388E3C;
+        }
+        .maneuver-btn {
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+        .maneuver-btn i {
+            margin-right: 5px;
+        }
+        input[type="range"] {
+            width: 200px;
+            margin: 0;
+        }
+        .reset-controls {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="orbitCanvas"></div>
+    <div class="controls" style="position: fixed; top: 20px; left: 20px; z-index: 100;">
+        <div class="reset-controls">
+            <button onclick="reset()"><i class="fas fa-redo"></i> Reset Orbit</button>
+            <button onclick="resetBurn()" id="resetBurnBtn" disabled="disabled"><i class="fas fa-times"></i> Reset Burn</button>
+            <button onclick="executeBurnOrPause()" id="executePauseBtn"><i class="fas fa-pause"></i> Pause</button>
+        </div>
+        <div class="burn-controls">
+            <div class="velocity-controls">
+                <label for="deltaV">Burn Intensity:</label>
+                <input type="range" id="deltaV" value="0.6" min="0.2" max="2.0" step="0.2">
+            </div>
+            <button onclick="planPrograde()" class="maneuver-btn"><i class="fas fa-arrow-right"></i> Prograde</button>
+            <button onclick="planRetrograde()" class="maneuver-btn"><i class="fas fa-arrow-left"></i> Retrograde</button>
+            <button onclick="planRadialIn()" class="maneuver-btn"><i class="fas fa-arrow-up"></i> Radial In</button>
+            <button onclick="planRadialOut()" class="maneuver-btn"><i class="fas fa-arrow-down"></i> Radial Out</button>
+            <button onclick="planNormal()" class="maneuver-btn"><i class="fas fa-circle-arrow-up"></i> Normal</button>
+            <button onclick="planAntiNormal()" class="maneuver-btn"><i class="fas fa-circle-arrow-down"></i> Anti-Normal</button>
+        </div>
+    </div>
+    <script src="orbit3d.js"></script>
+</body>
+</html>
